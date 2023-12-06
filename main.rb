@@ -48,8 +48,8 @@ module Homebrew
   revision = ENV['HOMEBREW_BUMP_REVISION']
   force = ENV['HOMEBREW_BUMP_FORCE']
   livecheck = ENV['HOMEBREW_BUMP_LIVECHECK']
-  use_github_actions_user = ENV['HOMEBREW_COMMIT_AUTHOR_GITHUB_ACTIONS_USER']
-  use_sender_user = ENV['HOMEBREW_COMMIT_AUTHOR_SENDER_USER']
+  use_github_actions_user = ENV['HOMEBREW_COMMIT_AUTHOR_GITHUB_ACTIONS_USER'] == 'true'
+  use_sender_user = ENV['HOMEBREW_COMMIT_AUTHOR_SENDER_USER'] == 'true'
 
   # Check inputs
   if livecheck.false?
