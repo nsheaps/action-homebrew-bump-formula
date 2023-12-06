@@ -58,7 +58,7 @@ module Homebrew
   end
 
   # Get user details
-  if use_github_actions_user.true?
+  if use_github_actions_user
     # gh api \
     # -H "Accept: application/vnd.github+json" \
     # -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -68,7 +68,7 @@ module Homebrew
     user['login'] = 'github-actions[bot]'
     user['name'] = 'Github Actions'
     user['email'] = 'github-actions[bot]@users.noreply.github.com'
-  elsif use_sender_user.true?
+  elsif use_sender_user
     user = {}
     user['id'] = ENV['GITHUB_SENDER_ID'].to_i
     user['login'] = ENV['GITHUB_SENDER_LOGIN']
