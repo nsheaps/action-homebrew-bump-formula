@@ -48,6 +48,8 @@ module Homebrew
   revision = ENV['HOMEBREW_BUMP_REVISION']
   force = ENV['HOMEBREW_BUMP_FORCE']
   livecheck = ENV['HOMEBREW_BUMP_LIVECHECK']
+  use_github_actions_user = ENV['HOMEBREW_COMMIT_AUTHOR_GITHUB_ACTIONS_USER']
+  use_sender_user = ENV['HOMEBREW_COMMIT_AUTHOR_SENDER_USER']
 
   # Check inputs
   if livecheck.false?
@@ -56,19 +58,37 @@ module Homebrew
   end
 
   # Get user details
-  user = GitHub::API.open_rest "#{GitHub::API_URL}/user"
-  user_id = user['id']
-  user_login = user['login']
-  user_name = user['name'] || user['login']
-  user_email = user['email'] || (
-    # https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address
-    user_created_at = Date.parse user['created_at']
-    plus_after_date = Date.parse '2017-07-18'
-    need_plus_email = (user_created_at - plus_after_date).positive?
-    user_email = "#{user_login}@users.noreply.github.com"
-    user_email = "#{user_id}+#{user_email}" if need_plus_email
-    user_email
-  )
+  if use_github_actions_user.true?
+    # gh api \
+    # -H "Accept: application/vnd.github+json" \
+    # -H "X-GitHub-Api-Version: 2022-11-28" \
+    # "/users/github-actions[bot]"
+    user = {}
+    user['id'] = 41898282,
+    user['login'] = 'github-actions[bot]'
+    user['name'] = 'Github Actions'
+    user['email'] = 'github-actions[bot]@users.noreply.github.com'
+  elsif use_sender_user.true?
+    user = {}
+    user['id'] = ENV['GITHUB_SENDER_ID'].to_i
+    user['login'] = ENV['GITHUB_SENDER_LOGIN']
+    user['name'] = ENV['GITHUB_SENDER_NAME']
+    user['email'] = ENV['GITHUB_SENDER_EMAIL']
+  else
+    user = GitHub::API.open_rest "#{GitHub::API_URL}/user"
+    user_id = user['id']
+    user_login = user['login']
+    user_name = user['name'] || user['login']
+    user_email = user['email'] || (
+      # https://help.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address
+      user_created_at = Date.parse user['created_at']
+      plus_after_date = Date.parse '2017-07-18'
+      need_plus_email = (user_created_at - plus_after_date).positive?
+      user_email = "#{user_login}@users.noreply.github.com"
+      user_email = "#{user_id}+#{user_email}" if need_plus_email
+      user_email
+    )
+  end
 
   # Tell git who you are
   git 'config', '--global', 'user.name', user_name

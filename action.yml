@@ -72,6 +72,16 @@ inputs:
       If formula input is specified - check one or more formulae.
       If formula and tap inputs are specified - check one or more formulae in that tap.
     required: false
+  use-github-actions-user:
+    description: |
+      If true, the git commits made will be tagged with the user info of the github-actions[bot] account
+    required: false
+    default: 'true'
+  use-sender-user:
+    description: |
+      If true, the git commits made will be tagged with the user info of the sender of the event.
+    required: false
+    default: 'false'
 runs:
   using: composite
   steps:
@@ -92,3 +102,9 @@ runs:
         HOMEBREW_BUMP_REVISION: ${{inputs.revision}}
         HOMEBREW_BUMP_FORCE: ${{inputs.force}}
         HOMEBREW_BUMP_LIVECHECK: ${{inputs.livecheck}}
+        HOMEBREW_COMMIT_AUTHOR_GITHUB_ACTIONS_USER: ${{inputs.use-github-actions-user}}
+        HOMEBREW_COMMIT_AUTHOR_SENDER_USER: ${{inputs.use-sender-user}}
+        GITHUB_SENDER_ID: ${{github.actor_id}}
+        GITHUB_SENDER_LOGIN: ${{github.actor}}
+        GITHUB_SENDER_NAME: ${{github.actor}}
+        GITHUB_SENDER_EMAIL: ${{github.actor_id}}+${{github.actor}}@users.noreply.github.com
