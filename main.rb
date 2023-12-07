@@ -109,7 +109,7 @@ module Homebrew
   if !tap.blank? && !no_fork.false?
     # go to the local tap checkout
     current_dir = Dir.pwd
-    tap_clone_location = read_brew, '--repo', tap
+    tap_clone_location = read_brew '--repo', tap
     Dir.chdir tap_clone_location
     
     # get the current upstream url for the tap
