@@ -120,13 +120,12 @@ module Homebrew
     git 'remote', 'set-url', 'origin', tap_repo_origin
 
     if !force.false?
-      # add a pre-commit hook that force pushes
-      File.new('.git/hooks/pre-commit', 'w') do |f|
-        f.puts '#!/bin/bash'
+      f = File.new('.git/hooks/pre-commit', 'w')
+      f.puts '#!/bin/bash'
 
-        f.puts '# Force push when the pre-push hook is triggered'
-        f.puts 'git push --force "$@"'
-      end
+      f.puts '# Force push when the pre-push hook is triggered'
+      f.puts 'git push --force "$@"'
+      f.close
     end
 
     # go back to the original directory
