@@ -121,6 +121,7 @@ module Homebrew
 
     # go back to the original directory
     Dir.chdir current_dir
+  end
 
   # Append additional PR message
   message = if message.blank?
