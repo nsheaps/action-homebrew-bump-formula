@@ -119,7 +119,15 @@ module Homebrew
     # set the new url with the token in it
     git 'remote', 'set-url', 'origin', tap_repo_origin
 
-    git 'config', 'alias.push', 'push --force' unless force.false?
+    if !force.false?
+      # add a pre-commit hook that force pushes
+      File.open('.git/hooks/pre-commit', 'w') do |f|
+        f.puts '#!/bin/bash'
+
+        f.puts '# Force push when the pre-push hook is triggered'
+        f.puts 'git push --force "$@"'
+      end
+    end
 
     # go back to the original directory
     Dir.chdir current_dir
