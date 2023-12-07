@@ -8,7 +8,12 @@ Works on Ubuntu and macOS runners.
 
 One should use the [Personal Access Token](https://github.com/settings/tokens/new?scopes=public_repo,workflow) for `token` input to this Action, not the default `GITHUB_TOKEN`, because `brew bump-formula-pr` creates a fork of the formula's tap repository (if needed) and then creates a pull request.
 
-> There are two ways to use this Action.
+If you choose to use this action in a tap with `no_fork` = `true`, you can use `secrets.GITHUB_TOKEN` if:
+
+1. The repo config allows github actions to write to the repo
+2. The github actions job has `contents: write` permissions
+
+## There are two ways to use this Action.
 
 ### Standard mode
 
@@ -29,7 +34,7 @@ The Action will extract all needed informations by itself, you just need to spec
 - name: Update Homebrew formula
   uses: dawidd6/action-homebrew-bump-formula@v3
   with:
-    # Required, custom GitHub access token with the 'public_repo' and 'workflow' scopes
+    # Required, custom GitHub access token with the 'public_repo' and 'workflow' scopes, or a github.token / secrets.GITHUB_TOKEN
     token: ${{secrets.TOKEN}}
     # Optional, will create tap repo fork in organization
     org: ORG
