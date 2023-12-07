@@ -102,7 +102,7 @@ module Homebrew
   brew 'tap', 'homebrew/core', '-v'
   
   # Tap the requested tap if applicable
-  brew 'tap', tap unless tap.blank?, '-v'
+  brew 'tap', tap, '-v' unless tap.blank?
 
   # If tap is not blank and no_fork is true, go to the local tap and set the
   # token in the URL for authentication so it's not asked later
