@@ -104,6 +104,23 @@ module Homebrew
   # Tap the requested tap if applicable
   brew 'tap', tap unless tap.blank?
 
+  # If tap is not blank and no_fork is true, go to the local tap and set the
+  # token in the URL for authentication so it's not asked later
+  if !tap.blank? && no_fork.true?
+    # go to the local tap checkout
+    current_dir = Dir.pwd
+    Dir.chdir "#{ENV["HOMEBREW_LIBRARY"]}/Taps/#{tap}"
+    
+    # get the current upstream url for the tap
+    tap_repo_origin = `git config --get remote.origin.url`.chomp
+    tap_repo_origin = tap_repo_origin.gsub('https://', "https://x-access-token:#{ENV["HOMEBREW_GITHUB_API_TOKEN"]}@")
+
+    # set the new url with the token in it
+    git 'remote', 'set-url', 'origin', tap_repo_origin
+
+    # go back to the original directory
+    Dir.chdir current_dir
+
   # Append additional PR message
   message = if message.blank?
               ''
