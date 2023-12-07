@@ -120,12 +120,15 @@ module Homebrew
     git 'remote', 'set-url', 'origin', tap_repo_origin
 
     if !force.false?
+      # make sure .git/hooks exists
+      FileUtils.mkdir_p '.git/hooks'
       f = File.new('.git/hooks/pre-commit', 'w')
       f.puts '#!/bin/bash'
-
       f.puts '# Force push when the pre-push hook is triggered'
       f.puts 'git push --force "$@"'
       f.close
+      # make the file executable
+      File.chmod(0755, '.git/hooks/pre-commit')
     end
 
     # go back to the original directory
