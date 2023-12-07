@@ -109,7 +109,8 @@ module Homebrew
   if !tap.blank? && no_fork.true?
     # go to the local tap checkout
     current_dir = Dir.pwd
-    Dir.chdir "#{ENV["HOMEBREW_LIBRARY"]}/Taps/#{tap}"
+    tap_clone_location = brew_read, '--repo', tap
+    Dir.chdir tap_clone_location
     
     # get the current upstream url for the tap
     tap_repo_origin = `git config --get remote.origin.url`.chomp
