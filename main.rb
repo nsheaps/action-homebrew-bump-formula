@@ -99,10 +99,10 @@ module Homebrew
   git 'config', '--global', 'user.email', user_email
 
   # Always tap homebrew/core, otherwise brew can't find formulae
-  brew 'tap', 'homebrew/core'
+  brew 'tap', 'homebrew/core', '-v'
   
   # Tap the requested tap if applicable
-  brew 'tap', tap unless tap.blank?
+  brew 'tap', tap unless tap.blank?, '-v'
 
   # If tap is not blank and no_fork is true, go to the local tap and set the
   # token in the URL for authentication so it's not asked later
