@@ -106,7 +106,7 @@ module Homebrew
 
   # If tap is not blank and no_fork is true, go to the local tap and set the
   # token in the URL for authentication so it's not asked later
-  if !tap.blank? && no_fork.true?
+  if !tap.blank? && !no_fork.false?
     # go to the local tap checkout
     current_dir = Dir.pwd
     tap_clone_location = brew_read, '--repo', tap
