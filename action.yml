@@ -92,7 +92,6 @@ runs:
     - env:
         GH_TOKEN: ${{inputs.token}}
       run: |
-        gh auth login
         gh auth setup-git
       shell: sh
     - run: brew ruby $GITHUB_ACTION_PATH/main.rb
