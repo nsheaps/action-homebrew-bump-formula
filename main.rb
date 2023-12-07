@@ -118,6 +118,7 @@ module Homebrew
 
     # set the new url with the token in it
     git 'remote', 'set-url', 'origin', tap_repo_origin
+    git 'config', 'push.default', 'current'
 
     if !force.false?
       # make sure .git/hooks exists
