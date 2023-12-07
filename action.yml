@@ -89,6 +89,12 @@ runs:
       shell: sh
     - run: brew update-reset
       shell: sh
+    - env:
+        GH_TOKEN: ${{inputs.token}}
+      run: |
+        gh auth login
+        gh auth setup-git
+      shell: sh
     - run: brew ruby $GITHUB_ACTION_PATH/main.rb
       shell: sh
       env:
