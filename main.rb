@@ -121,7 +121,7 @@ module Homebrew
 
     if !force.false?
       # add a pre-commit hook that force pushes
-      File.open('.git/hooks/pre-commit', 'w') do |f|
+      File.new('.git/hooks/pre-commit', 'w') do |f|
         f.puts '#!/bin/bash'
 
         f.puts '# Force push when the pre-push hook is triggered'
