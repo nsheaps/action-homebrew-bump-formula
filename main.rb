@@ -99,10 +99,10 @@ module Homebrew
   git 'config', '--global', 'user.email', user_email
 
   # Always tap homebrew/core, otherwise brew can't find formulae
-  brew 'tap', 'homebrew/core', '-v'
+  brew 'tap', 'homebrew/core'
   
   # Tap the requested tap if applicable
-  brew 'tap', tap, '-v' unless tap.blank?
+  brew 'tap', tap unless tap.blank?
 
   # If tap is not blank and no_fork is true, go to the local tap and set the
   # token in the URL for authentication so it's not asked later
@@ -118,6 +118,8 @@ module Homebrew
 
     # set the new url with the token in it
     git 'remote', 'set-url', 'origin', tap_repo_origin
+
+    git 'config', 'alias.pushf', 'push --force' unless force.false?
 
     # go back to the original directory
     Dir.chdir current_dir
