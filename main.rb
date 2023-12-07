@@ -119,7 +119,7 @@ module Homebrew
     # set the new url with the token in it
     git 'remote', 'set-url', 'origin', tap_repo_origin
 
-    git 'config', 'alias.pushf', 'push --force' unless force.false?
+    git 'config', 'alias.push', 'push --force' unless force.false?
 
     # go back to the original directory
     Dir.chdir current_dir
